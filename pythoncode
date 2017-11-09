@@ -1,1 +1,25 @@
-# stuffs here
+from random import randrange
+from time import sleep
+preset_words = {"smoothies", "teddy bear", "toy castle", "penthouse floor", "feel the thunder"}
+yes_responses = {"y", "ye", "okay", "k", "kay", "ok", "sure", "yes"}
+no_reponses = {"no", "n", "nada", "nah"}
+
+def Game(word):
+    
+
+def beginGame():
+    phrase = [preset_words[randrange(0, len(preset_words))]]
+    # Setting up
+    Game(phrase)
+
+def startGame():
+    start = input("Would you like to play a game of hangman? ")
+    if start in yes_responses:
+        beginGame()
+    elif start in no_reponses:
+        print("Alright, we can play another time then. (eof)")
+    else:
+        print("I don't understand your response. Try again?")
+        startGame()
+
+startGame()
