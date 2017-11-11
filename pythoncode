@@ -1,25 +1,81 @@
 from random import randrange
-from time import sleep
-preset_words = {"smoothies", "teddy bear", "toy castle", "penthouse floor", "feel the thunder"}
+preset_words = ["smoothies", "teddy bear", "toy castle", "penthouse floor", "feel the thunder"]
 yes_responses = {"y", "ye", "okay", "k", "kay", "ok", "sure", "yes"}
 no_reponses = {"no", "n", "nada", "nah"}
+moves = 8
 
-def Game(word):
-    
+def print_censored(phrase):
+    print("Your phrase: " + " ".join(phrase))
+    print("")
 
-def beginGame():
-    phrase = [preset_words[randrange(0, len(preset_words))]]
-    # Setting up
-    Game(phrase)
+def Game():
+    phrase = preset_words[randrange(0, len(preset_words))]
+    censoredphrase = []
+    for letter in phrase:
+        if letter.isalpha():
+            censoredphrase.append("_")
+        else:
+            censoredphrase.append(" ")
+
+    guesses = []
+
+    for guess in range(moves):
+        guess += 1
+        if guess > 20:
+            print("END GAME") 
+            break
+        elif guess == moves + 1:
+            print("GAME OVER. BETTER LUCK NEXT TIME!")
+        print("")
+        print("This is guess number %s. \nYou have %s more chances." % (guess, moves - guess))
+        print("")
+        print_censored(censoredphrase)
+        if guesses != []:
+            print(str(guesses) + " These are your previous guesses.")
+            print("")
+        while True:
+            answer = input("Your guess? Guess a letter or solve. ")
+            if len(answer) == 1 and answer.isalpha() and answer not in guesses:
+                guesses.append(answer)
+                if answer.lower() in phrase:
+                    letters = 0 
+                    for i, letter in enumerate(phrase):
+                        if letter == answer.lower():
+                            letters += 1
+                            censoredphrase[i] = letter
+                    print("")
+                    print("There were %s %s's!" % (letters, answer))
+
+                    if censoredphrase == phrase:
+                        print("You win! The correct phrase was " + phrase + ".")
+                        guess = 100
+                        break
+                else:
+                    print("")
+                    print("Sorry, nope!")
+                break
+            elif answer.lower() == phrase:
+                print("")
+                print("That's correct! You win! The correct phrase was " + phrase + ".")
+                guess = 100
+                break
+            elif len(answer) > 0:
+                print("You solved incorrectly!")
+            elif answer.lower() in guesses:
+                print("You already guessed that!")
+            else:
+                print("Not a valid response. Try again.")
 
 def startGame():
-    start = input("Would you like to play a game of hangman? ")
-    if start in yes_responses:
-        beginGame()
-    elif start in no_reponses:
-        print("Alright, we can play another time then. (eof)")
-    else:
-        print("I don't understand your response. Try again?")
-        startGame()
+    while True:
+        start = input("Would you like to play a game of hangman? ")
+        if start in yes_responses:
+            Game()
+            break
+        elif start in no_reponses:
+            print("Alright, we can play another time then. (eof)")
+            break
+        else:
+            print("I don't understand your response. Try again?")
 
 startGame()
